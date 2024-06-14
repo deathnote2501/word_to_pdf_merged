@@ -1,45 +1,34 @@
 import streamlit as st
-from PyPDF2 import PdfMerger
-from docx import Document
-from io import BytesIO
-from docx2pdf import convert as convert_docx_to_pdf
+import sys
 
-# Function to convert a DOCX file to PDF
-def convert_to_pdf(docx_file):
-    output = BytesIO()
-    with open("temp.docx", "wb") as f:
-        f.write(docx_file.getbuffer())
-    convert_docx_to_pdf("temp.docx", output)
-    return output.getvalue()
+# Basic check to ensure Streamlit is rendering something
+st.title("Streamlit App Debugging")
+st.write("If you can see this message, Streamlit is working correctly.")
 
-# Function to merge PDF files
-def merge_pdfs(pdf_files):
-    merger = PdfMerger()
-    for pdf in pdf_files:
-        merger.append(BytesIO(pdf))
-    output = BytesIO()
-    merger.write(output)
-    merger.close()
-    return output.getvalue()
+# Display Python version to ensure environment is correct
+st.write(f"Python version: {sys.version}")
 
-# Streamlit app interface
-st.title("Convert and Merge Word and PDF Files")
+# Check if required libraries are installed
+try:
+    from PyPDF2 import PdfMerger
+    from docx import Document
+    from io import BytesIO
+    from docx2pdf import convert as convert_docx_to_pdf
+    st.write("All required libraries are imported successfully.")
+except ImportError as e:
+    st.error(f"Error importing libraries: {e}")
 
+# Simple uploader to test file upload functionality
 uploaded_files = st.file_uploader("Upload PDF or Word files", type=['pdf', 'docx'], accept_multiple_files=True)
 
 if uploaded_files:
-    pdf_files = []
+    st.write("Files uploaded:")
     for uploaded_file in uploaded_files:
-        if uploaded_file.type == "application/pdf":
-            pdf_files.append(uploaded_file.read())
-        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            pdf_files.append(convert_to_pdf(uploaded_file))
-    
-    if pdf_files:
-        merged_pdf = merge_pdfs(pdf_files)
-        st.success("Files have been successfully merged!")
-        st.download_button(label="Download Merged PDF", data=merged_pdf, file_name="merged.pdf", mime="application/pdf")
+        st.write(f"- {uploaded_file.name}")
 
-# Add some basic content for testing
-st.write("This is a test to ensure the app is working.")
-st.write("Upload files above to convert and merge them.")
+# Check if any files are uploaded
+if st.button("Check Files"):
+    if uploaded_files:
+        st.write("Files are present.")
+    else:
+        st.write("No files uploaded.")
