@@ -1,0 +1,9 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+
+# Ignore temporary files
+temp.docx
+
+# Ignore environment files
+.env
