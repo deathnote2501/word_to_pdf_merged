@@ -8,7 +8,7 @@ def main():
     # Password input
     password = st.text_input("Enter password to access the app", type="password")
     
-    if password == "60000rebonds":  # Replace with the desired password
+    if password == "your_password_here":  # Replace with the desired password
         # Create a file uploader for multiple PDF files
         uploaded_files = st.file_uploader("Choose PDF files", type="pdf", accept_multiple_files=True)
         
@@ -29,10 +29,13 @@ def main():
             pdf_writer.write(merged_pdf)
             merged_pdf.seek(0)
 
+            # Store the merged PDF in session state
+            st.session_state.merged_pdf = merged_pdf
+
             # Create a download button
             st.download_button(
                 label="Download Merged PDF",
-                data=merged_pdf,
+                data=st.session_state.merged_pdf,
                 file_name="merged.pdf",
                 mime="application/pdf"
             )
