@@ -11,7 +11,7 @@ def convert_docx_to_pdf(file_path):
     return output_path
 
 def main():
-    st.title("PDF and DOC/DOCX File Uploader and Merger")
+    st.title("PDF and DOC/DOCX File Uploader and Merger 2")
 
     # Create a file uploader for multiple PDF, DOC, and DOCX files
     uploaded_files = st.file_uploader("Choose PDF, DOC, and DOCX files", type=["pdf", "doc", "docx"], accept_multiple_files=True)
