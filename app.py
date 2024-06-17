@@ -8,7 +8,7 @@ def main():
     # Password input
     password = st.text_input("Enter password to access the app", type="password")
     
-    if password == "your_password_here":  # Replace with the desired password
+    if password == "60000rebonds":  # Replace with the desired password
         # Create a file uploader for multiple PDF files
         uploaded_files = st.file_uploader("Choose PDF files", type="pdf", accept_multiple_files=True)
         
