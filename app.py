@@ -1,17 +1,31 @@
 import streamlit as st
 from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
-from docx2pdf import convert
+from docx import Document
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 import tempfile
 import os
 
 def convert_docx_to_pdf(file_path):
-    output_path = file_path + ".pdf"
-    convert(file_path, output_path)
-    return output_path
+    document = Document(file_path)
+    output_buffer = BytesIO()
+    c = canvas.Canvas(output_buffer, pagesize=letter)
+    width, height = letter
+
+    for paragraph in document.paragraphs:
+        c.drawString(72, height - 72, paragraph.text)
+        height -= 14
+        if height <= 72:
+            c.showPage()
+            height = letter[1]
+
+    c.save()
+    output_buffer.seek(0)
+    return output_buffer
 
 def main():
-    st.title("PDF and DOC/DOCX File Uploader and Merger 3")
+    st.title("PDF and DOC/DOCX File Uploader and Merger")
 
     # Create a file uploader for multiple PDF, DOC, and DOCX files
     uploaded_files = st.file_uploader("Choose PDF, DOC, and DOCX files", type=["pdf", "doc", "docx"], accept_multiple_files=True)
@@ -34,21 +48,18 @@ def main():
                     tmp_file.write(uploaded_file.getbuffer())
                     tmp_file_path = tmp_file.name
 
-                # Convert the DOC or DOCX file to PDF
                 if uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                    pdf_file_path = convert_docx_to_pdf(tmp_file_path)
+                    # Convert the DOCX file to PDF
+                    pdf_buffer = convert_docx_to_pdf(tmp_file_path)
+                    pdf_reader = PdfReader(pdf_buffer)
+                    for page_num in range(len(pdf_reader.pages)):
+                        pdf_writer.add_page(pdf_reader.pages[page_num])
                 else:
                     st.error("Currently, only DOCX files are supported for conversion. Please upload DOCX files.")
                     continue
                 
-                # Read the converted PDF and add its pages to the writer
-                pdf_reader = PdfReader(pdf_file_path)
-                for page_num in range(len(pdf_reader.pages)):
-                    pdf_writer.add_page(pdf_reader.pages[page_num])
-                
                 # Clean up the temporary files
                 os.remove(tmp_file_path)
-                os.remove(pdf_file_path)
 
         # Save the merged PDF to a BytesIO object
         merged_pdf = BytesIO()
