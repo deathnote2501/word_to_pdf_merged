@@ -1,5 +1,5 @@
 import streamlit as st
-from PyPDF2 import PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 
 def main():
@@ -12,13 +12,13 @@ def main():
         st.write(f"Number of files uploaded: {len(uploaded_files)}")
         
         # Create a PDF writer object
-        pdf_writer = PdfFileWriter()
+        pdf_writer = PdfWriter()
 
         # Iterate over the uploaded files
         for uploaded_file in uploaded_files:
-            pdf_reader = PdfFileReader(uploaded_file)
-            for page_num in range(pdf_reader.getNumPages()):
-                pdf_writer.addPage(pdf_reader.getPage(page_num))
+            pdf_reader = PdfReader(uploaded_file)
+            for page_num in range(len(pdf_reader.pages)):
+                pdf_writer.add_page(pdf_reader.pages[page_num])
 
         # Save the merged PDF to a BytesIO object
         merged_pdf = BytesIO()
