@@ -3,6 +3,15 @@ from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 import pypandoc
 import tempfile
+import os
+
+def check_pandoc():
+    """Check if Pandoc is installed."""
+    try:
+        pypandoc.get_pandoc_version()
+        return True
+    except OSError:
+        return False
 
 def doc_to_pdf(file_path):
     output_file = file_path + ".pdf"
@@ -11,10 +20,15 @@ def doc_to_pdf(file_path):
 
 def main():
     st.title("PDF and DOC/DOCX File Uploader and Merger")
-    
+
+    # Check if Pandoc is installed
+    if not check_pandoc():
+        st.error("Pandoc is not installed. Please install Pandoc to use this app.")
+        st.stop()
+
     # Create a file uploader for multiple PDF, DOC, and DOCX files
     uploaded_files = st.file_uploader("Choose PDF, DOC, and DOCX files", type=["pdf", "doc", "docx"], accept_multiple_files=True)
-    
+
     if uploaded_files:
         st.write(f"Number of files uploaded: {len(uploaded_files)}")
         
@@ -32,7 +46,7 @@ def main():
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".docx" if uploaded_file.type.endswith("document") else ".doc") as tmp_file:
                     tmp_file.write(uploaded_file.getbuffer())
                     tmp_file_path = tmp_file.name
-                
+
                 # Convert the DOC or DOCX file to PDF
                 pdf_file_path = doc_to_pdf(tmp_file_path)
                 
@@ -40,7 +54,11 @@ def main():
                 pdf_reader = PdfReader(pdf_file_path)
                 for page_num in range(len(pdf_reader.pages)):
                     pdf_writer.add_page(pdf_reader.pages[page_num])
-        
+                
+                # Clean up the temporary files
+                os.remove(tmp_file_path)
+                os.remove(pdf_file_path)
+
         # Save the merged PDF to a BytesIO object
         merged_pdf = BytesIO()
         pdf_writer.write(merged_pdf)
