@@ -1,5 +1,6 @@
 import streamlit as st
-import fitz  # PyMuPDF
+import pdfplumber
+from fpdf import FPDF
 from io import BytesIO
 
 def main():
@@ -11,24 +12,28 @@ def main():
     if uploaded_files:
         st.write(f"Number of files uploaded: {len(uploaded_files)}")
         
-        # Create a new PDF document
-        merged_pdf = fitz.open()
+        # Create a FPDF object
+        pdf_writer = FPDF()
 
         # Iterate over the uploaded files
         for uploaded_file in uploaded_files:
-            pdf_document = fitz.open(stream=uploaded_file.read(), filetype="pdf")
-            for page_num in range(len(pdf_document)):
-                merged_pdf.insert_pdf(pdf_document, from_page=page_num, to_page=page_num)
+            with pdfplumber.open(uploaded_file) as pdf:
+                for page in pdf.pages:
+                    pdf_writer.add_page()
+                    text = page.extract_text()
+                    if text:
+                        pdf_writer.set_font("Arial", size=12)
+                        pdf_writer.multi_cell(0, 10, text)
 
         # Save the merged PDF to a BytesIO object
-        merged_pdf_bytes = merged_pdf.write()
-        merged_pdf_io = BytesIO(merged_pdf_bytes)
-        merged_pdf_io.seek(0)
+        merged_pdf = BytesIO()
+        pdf_writer.output(merged_pdf)
+        merged_pdf.seek(0)
 
         # Create a download button
         st.download_button(
             label="Download Merged PDF",
-            data=merged_pdf_io,
+            data=merged_pdf,
             file_name="merged.pdf",
             mime="application/pdf"
         )
