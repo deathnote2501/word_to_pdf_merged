@@ -3,7 +3,7 @@ from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 
 def main():
-    st.title("PDF File Uploader and Merger")
+    st.title("PDF File Uploader and Merger for Marc :)")
 
     # Password input
     password = st.text_input("Enter password to access the app", type="password")
