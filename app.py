@@ -1,30 +1,17 @@
 import streamlit as st
 from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
-import pypandoc
+from docx2pdf import convert
 import tempfile
 import os
 
-def check_pandoc():
-    """Check if Pandoc is installed."""
-    try:
-        pypandoc.get_pandoc_version()
-        return True
-    except OSError:
-        return False
-
-def doc_to_pdf(file_path):
-    output_file = file_path + ".pdf"
-    pypandoc.convert_file(file_path, 'pdf', outputfile=output_file)
-    return output_file
+def convert_docx_to_pdf(file_path):
+    output_path = file_path + ".pdf"
+    convert(file_path, output_path)
+    return output_path
 
 def main():
     st.title("PDF and DOC/DOCX File Uploader and Merger")
-
-    # Check if Pandoc is installed
-    if not check_pandoc():
-        st.error("Pandoc is not installed. Please install Pandoc to use this app.")
-        st.stop()
 
     # Create a file uploader for multiple PDF, DOC, and DOCX files
     uploaded_files = st.file_uploader("Choose PDF, DOC, and DOCX files", type=["pdf", "doc", "docx"], accept_multiple_files=True)
@@ -48,7 +35,11 @@ def main():
                     tmp_file_path = tmp_file.name
 
                 # Convert the DOC or DOCX file to PDF
-                pdf_file_path = doc_to_pdf(tmp_file_path)
+                if uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                    pdf_file_path = convert_docx_to_pdf(tmp_file_path)
+                else:
+                    st.error("Currently, only DOCX files are supported for conversion. Please upload DOCX files.")
+                    continue
                 
                 # Read the converted PDF and add its pages to the writer
                 pdf_reader = PdfReader(pdf_file_path)
