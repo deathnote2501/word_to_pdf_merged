@@ -1,6 +1,5 @@
 import streamlit as st
-import pdfplumber
-from fpdf import FPDF
+from PyPDF2 import PdfFileReader, PdfFileWriter
 from io import BytesIO
 
 def main():
@@ -12,22 +11,18 @@ def main():
     if uploaded_files:
         st.write(f"Number of files uploaded: {len(uploaded_files)}")
         
-        # Create a FPDF object
-        pdf_writer = FPDF()
+        # Create a PDF writer object
+        pdf_writer = PdfFileWriter()
 
         # Iterate over the uploaded files
         for uploaded_file in uploaded_files:
-            with pdfplumber.open(uploaded_file) as pdf:
-                for page in pdf.pages:
-                    pdf_writer.add_page()
-                    text = page.extract_text()
-                    if text:
-                        pdf_writer.set_font("Arial", size=12)
-                        pdf_writer.multi_cell(0, 10, text)
+            pdf_reader = PdfFileReader(uploaded_file)
+            for page_num in range(pdf_reader.getNumPages()):
+                pdf_writer.addPage(pdf_reader.getPage(page_num))
 
         # Save the merged PDF to a BytesIO object
         merged_pdf = BytesIO()
-        pdf_writer.output(merged_pdf)
+        pdf_writer.write(merged_pdf)
         merged_pdf.seek(0)
 
         # Create a download button
@@ -37,3 +32,6 @@ def main():
             file_name="merged.pdf",
             mime="application/pdf"
         )
+
+if __name__ == "__main__":
+    main()
