@@ -17,7 +17,7 @@ def main():
         st.write("")
         st.write("")
         st.subheader("Chargez vos fichiers PDF ci-dessous :")
-        uploaded_files = st.file_uploader(type="pdf", accept_multiple_files=True)
+        uploaded_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
         
         if uploaded_files:
             st.write(f"Number of files uploaded: {len(uploaded_files)}")
