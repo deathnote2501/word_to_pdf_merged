@@ -14,6 +14,8 @@ def main():
         st.write("")
         st.write("")
         st.write("")
+        st.write("")
+        st.write("")
         st.subheader("Chargez vos fichiers PDF")
         uploaded_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
         
