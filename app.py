@@ -4,6 +4,7 @@ from io import BytesIO
 
 def main():
     st.title("Concaténer ses fichiers PDF")
+    st.write("Par Jérome IAvarone")
 
     # Password input
     password = st.text_input("Enter password to access the app", type="password")
