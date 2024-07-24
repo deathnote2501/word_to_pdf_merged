@@ -11,7 +11,9 @@ def main():
     
     if password == "jeromeIA":  # Replace with the desired password
         # Create a file uploader for multiple PDF files
-        uploaded_files = st.file_uploader("Chargez vos fichiers PDF à concaténer ci-dessous :", type="pdf", accept_multiple_files=True)
+        st.write("")
+        st.subheader("Chargez vos fichiers PDF :")
+        uploaded_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
         
         if uploaded_files:
             st.write(f"Number of files uploaded: {len(uploaded_files)}")
