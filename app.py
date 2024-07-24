@@ -3,7 +3,7 @@ from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 
 def main():
-    st.title("PDF File Uploader and Merger for Marc :)")
+    st.title("Concaténer ses fichiers PDF")
 
     # Password input
     password = st.text_input("Enter password to access the app", type="password")
@@ -39,6 +39,12 @@ def main():
                 file_name="merged.pdf",
                 mime="application/pdf"
             )
+        
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
+        
     else:
         st.warning("Incorrect password. Please try again.")
 
