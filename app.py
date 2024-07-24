@@ -20,7 +20,7 @@ def main():
         uploaded_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
         
         if uploaded_files:
-            st.write(f"Number of files uploaded: {len(uploaded_files)}")
+            st.write(f"Nombre de fichiers chargés : {len(uploaded_files)}")
             
             # Create a PDF writer object
             pdf_writer = PdfWriter()
@@ -41,7 +41,7 @@ def main():
 
             # Create a download button
             st.download_button(
-                label="Download Merged PDF",
+                label="Télécharger les fichiers PDF concaténés",
                 data=st.session_state.merged_pdf,
                 file_name="merged.pdf",
                 mime="application/pdf"
@@ -53,7 +53,7 @@ def main():
         st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
         
     else:
-        st.warning("Incorrect password. Please try again.")
+        st.warning("Mot de passe incorrect.")
 
 if __name__ == "__main__":
     main()
