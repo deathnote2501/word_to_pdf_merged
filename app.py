@@ -9,7 +9,7 @@ def main():
     # Password input
     password = st.text_input("Entrez le mot de passe pour accéder à l'application", type="password")
     
-    if password == st.secrets["PASSWORD"]  # Mot de passe correct
+    if password == st.secrets["PASSWORD"]:  # Mot de passe correct
         st.write("")
         st.write("")
         st.write("")
