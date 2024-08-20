@@ -18,6 +18,10 @@ def main():
         st.write("")
         st.subheader("Chargez vos fichiers PDF ci-dessous :")
         uploaded_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
+
+    else:
+        if password:  # Vérifie que l'utilisateur a saisi quelque chose
+            st.warning("Mot de passe incorrect.")
         
         if uploaded_files:
             st.write(f"Nombre de fichiers chargés : {len(uploaded_files)}")
