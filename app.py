@@ -3,6 +3,7 @@ from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 
 def main():
+    # Affichage du titre, sous-titre, et image avant la demande de mot de passe
     st.markdown("<h1 style='text-align: center;'>Concaténer vos fichiers PDFs</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Par Jérome IAvarone - IAvaronce conseil</p>", unsafe_allow_html=True)
     st.write("")
@@ -11,16 +12,12 @@ def main():
 
     # Password input
     password = st.text_input("Entrez le mot de passe pour accéder à l'application", type="password")
-    
+
     if password == st.secrets["PASSWORD"]:  # Mot de passe correct
-        st.write("")
-        st.write("")
-        st.write("")
-        st.write("")
         st.write("")
         st.markdown("<h2 style='text-align: left;'>Chargez vos fichiers PDF</h2>", unsafe_allow_html=True)
         
-        # Create a file uploader for multiple PDF files
+        # Crée un téléchargeur de fichiers pour plusieurs fichiers PDF
         uploaded_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
 
         if uploaded_files:
@@ -54,13 +51,14 @@ def main():
             except Exception as e:
                 st.error(f"Erreur lors de la fusion des fichiers PDF : {str(e)}")
 
-        st.write("")
-        st.write("")
-        st.write("")
-        st.markdown("<p style='text-align: center;'>© 2024 Jérome IAvarone - jerome.iavarone@gmail.com</p>", unsafe_allow_html=True)
-
     elif password:  # Vérifie que l'utilisateur a saisi un mot de passe incorrect
         st.warning("Mot de passe incorrect.")
+
+    # Affichage du pied de page
+    st.write("")
+    st.write("")
+    st.write("")
+    st.markdown("<p style='text-align: center;'>© 2024 Jérome IAvarone - jerome.iavarone@gmail.com</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
