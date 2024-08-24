@@ -57,7 +57,7 @@ def main():
         st.write("")
         st.write("")
         st.write("")
-        st.write("© 2024 Jérome Iavarone - jerome.iavarone@gmail.com")
+        st.markdown("<p style='text-align: center;'>© 2024 Jérome IAvarone - jerome.iavarone@gmail.com</p>", unsafe_allow_html=True)
 
     elif password:  # Vérifie que l'utilisateur a saisi un mot de passe incorrect
         st.warning("Mot de passe incorrect.")
