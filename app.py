@@ -3,8 +3,11 @@ from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 
 def main():
-    st.title("Concaténer ses fichiers PDF")
-    st.write("Par Jérome IAvarone")
+    st.markdown("<h1 style='text-align: center;'>Extraire les images de vos PDF</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;'>Par Jérome IAvarone - IAvaronce conseil</p>", unsafe_allow_html=True)
+    st.write("")
+    image_url = "https://www.iacademy-formation.com/wp-content/uploads/2024/08/iyus-sugiharto-jpkxJAcp6a4-unsplash-modified-1.png"
+    st.image(image_url, use_column_width=True)
 
     # Password input
     password = st.text_input("Entrez le mot de passe pour accéder à l'application", type="password")
@@ -15,7 +18,7 @@ def main():
         st.write("")
         st.write("")
         st.write("")
-        st.subheader("Chargez vos fichiers PDF ci-dessous :")
+        st.markdown("<h2 style='text-align: left;'>Chargez vos fichiers PDF</h2>", unsafe_allow_html=True)
         
         # Create a file uploader for multiple PDF files
         uploaded_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
