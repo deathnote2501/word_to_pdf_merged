@@ -3,7 +3,7 @@ from PyPDF2 import PdfReader, PdfWriter
 from io import BytesIO
 
 def main():
-    st.markdown("<h1 style='text-align: center;'EConcaténer vos fichiers PDFs</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>Concaténer vos fichiers PDFs</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Par Jérome IAvarone - IAvaronce conseil</p>", unsafe_allow_html=True)
     st.write("")
     image_url = "https://www.iacademy-formation.com/wp-content/uploads/2024/08/iyus-sugiharto-jpkxJAcp6a4-unsplash-modified-1.png"
